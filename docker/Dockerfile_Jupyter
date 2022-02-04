@@ -1,0 +1,13 @@
+FROM jcabrero/he_quantumacy_base:latest
+
+ARG USER=none
+ARG GROUP=none
+ARG UID=none
+ARG GID=none
+ARG PW=docker
+ARG ENV_NAME=anacondo
+
+ENV PYPATH=/home/${USER}/anaconda3/envs/${ENV_NAME}/bin/jupyter
+
+#CMD bash -c "$PYPATH ./client.py"
+CMD ["bash", "-c", "$PYPATH lab --port=10093 --no-browser --ip=0.0.0.0 --allow-root"]

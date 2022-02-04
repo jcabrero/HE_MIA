@@ -1,0 +1,57 @@
+name: Build Python Wheelhouse
+
+on: [push, pull_request]
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        #os: [ubuntu-20.04, windows-2019, macOS-10.15]
+        os: [ubuntu-20.04]
+    steps:
+      - uses: actions/checkout@v2
+
+      # Used to host cibuildwheel
+      - uses: actions/setup-python@v2
+      
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      # - name: Set up Go Env
+      #  working-directory: ./src/
+      #  run: go mod tidy
+
+      # - name: Build
+      #  working-directory: ./src/
+      #  run: make build
+      
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.3.1
+
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
+        working-directory: ./src/
+        # to supply options, put them in 'env', like:
+        env:
+          CIBW_BUILD: "cp*-manylinux_*"
+          CIBW_ARCHS: "x86_64"
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.6"
+          CIBW_ENVIRONMENT: PATH=$PATH:/usr/local/go/bin
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+          #CIBW_BEFORE_BUILD:
+          CIBW_BEFORE_ALL:
+            pip install certifi numpy && 
+            curl -O https://go.dev/dl/go1.17.6.linux-amd64.tar.gz --location &&
+            tar -xzf go1.17.6.linux-amd64.tar.gz &&
+            (rm -rf /usr/local/go || true) &&
+            mv go /usr/local/go &&
+            go mod tidy
+            
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./src/wheelhouse/*.whl
