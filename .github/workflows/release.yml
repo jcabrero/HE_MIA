@@ -37,7 +37,7 @@ jobs:
           path: release_url.txt
         
   build_wheels:
-    needs: [create_release] # TODO: Comment
+    #needs: [create_release] # TODO: Comment
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     outputs:
