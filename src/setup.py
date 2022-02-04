@@ -22,10 +22,17 @@ class build_go_ext(build_ext):
 setup(
     name='HELR',
     version='0.1.0',
+    description='A package for private Logistic Regression Inference',
+    author='José Cabrero Holgueras',
+    author_email='jcabreroholgueras@gmail.com',
+    license='MIT',
     py_modules=['HELR'],
     ext_modules=[
         Extension('_simulator', ['cmd/export/main.go'])
     ],
     cmdclass={'build_ext': build_go_ext},
+    install_requires=[
+      'numpy',
+    ],
     zip_safe=False
 )
