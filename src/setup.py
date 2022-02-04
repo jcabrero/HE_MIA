@@ -32,6 +32,9 @@ setup(
     ],
     cmdclass={'build_ext': build_go_ext},
     install_requires=[
+     'numpy',
+    ],
+    setup_requires=[
       'numpy',
     ],
     zip_safe=False
