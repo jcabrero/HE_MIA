@@ -125,7 +125,7 @@ jobs:
       matrix:
         value: ${{ fromJson(needs.build_wheels.outputs.matrix) }}
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: wheelhouse
           
@@ -160,7 +160,7 @@ jobs:
   #         persist-credentials: false
   #         fetch-depth: 0
 
-  #     - uses: actions/download-artifact@v2
+  #     - uses: actions/download-artifact@v4.1.7
   #       with:
   #         name: wheelhouse
 
